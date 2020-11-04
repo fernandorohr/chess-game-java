@@ -1,5 +1,7 @@
 package boardgame;
 
+import chess.ChessPiece;
+
 public class Board {
 
     private int rows;
@@ -24,7 +26,7 @@ public class Board {
     }
 
     public Piece piece(int row, int column) {
-        if (!checkPositionExists(row, column)) {
+        if (!positionExists(row, column)) {
             throw new BoardException("Board Error: position does not exists");
         }
         return pieces[row][column];
@@ -45,12 +47,28 @@ public class Board {
         piece.position = position;
     }
 
-    private boolean checkPositionExists (int row, int column) {
+    public Piece removePiece (Position position) {
+        if (!positionExists(position)) {
+            throw new BoardException("Board Error: position does not exists");
+        }
+
+        if (piece(position) == null) {
+            return null;
+        }
+
+        Piece aux = piece(position);
+        aux.position = null;
+        pieces[position.getRow()][position.getColumn()] = null;
+
+        return aux;
+    }
+
+    private boolean positionExists (int row, int column) {
         return row >= 0 && row < rows && column >= 0 && column < columns;
     }
 
     public boolean positionExists (Position position) {
-        return checkPositionExists(position.getRow(), position.getColumn());
+        return positionExists(position.getRow(), position.getColumn());
     }
 
     public boolean isThereAPiece (Position position) {
