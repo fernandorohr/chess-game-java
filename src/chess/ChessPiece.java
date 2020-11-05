@@ -22,4 +22,10 @@ public abstract class ChessPiece extends Piece {
 
         return p != null && p.color != this.color;
     }
+
+    protected boolean canMove(Position position) {
+        ChessPiece p = (ChessPiece)getBoard().piece(position);
+
+        return p == null || p.getColor() != this.getColor();
+    }
 }
